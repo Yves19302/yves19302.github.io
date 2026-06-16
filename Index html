@@ -7,181 +7,45 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-    .hero-bg {
-      background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
-    }
-    .tab-active {
-      border-bottom: 4px solid #10b981;
-      color: #10b981;
-      font-weight: 600;
-    }
+    body { font-family: system-ui, sans-serif; }
+    .hero { background: linear-gradient(135deg, #0ea5e9, #10b981); }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50">
 
-  <!-- Hero Section -->
-  <header class="hero-bg text-white py-16">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h1 class="text-5xl font-bold mb-4">BTB</h1>
-      <p class="text-2xl mb-6">Burundi Trade Business</p>
-      <p class="max-w-2xl mx-auto text-lg mb-8">
-        The smartest platform to create, manage, and trade products seamlessly. 
-        Connecting aspiring entrepreneurs and experienced traders across Burundi and beyond.
-      </p>
-      <div class="flex justify-center gap-4">
-        <button class="bg-white text-sky-600 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition">
-          <i class="fas fa-download mr-2"></i> Download App
-        </button>
-        <button onclick="document.getElementById('demo').scrollIntoView({behavior: 'smooth'})" 
-                class="border-2 border-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white/10 transition">
-          Try Demo
-        </button>
-      </div>
+  <div class="hero text-white text-center py-24">
+    <h1 class="text-6xl font-bold">BTB</h1>
+    <p class="text-3xl mt-3">Burundi Trade Business</p>
+    <p class="max-w-lg mx-auto mt-6 text-lg">Smart trading app for entrepreneurs in Burundi and worldwide.</p>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold text-center mb-10">Five Main Tabs</h2>
+
+    <div class="flex flex-wrap justify-center gap-6 border-b pb-6 mb-10">
+      <button onclick="switchTab(0)" class="font-bold text-xl active-tab">💬 Chat</button>
+      <button onclick="switchTab(1)" class="font-bold text-xl">🛒 Marketplace</button>
+      <button onclick="switchTab(2)" class="font-bold text-xl">📦 Orders</button>
+      <button onclick="switchTab(3)" class="font-bold text-xl">🛎️ Notifications</button>
+      <button onclick="switchTab(4)" class="font-bold text-xl">👤 Profile</button>
     </div>
-  </header>
 
-  <!-- App Summary -->
-  <section class="py-16 bg-white">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-10">Why Choose BTB?</h2>
-      <div class="grid md:grid-cols-2 gap-8 text-lg">
-        <div class="space-y-6">
-          <p><strong>BTB</strong> is an innovative business and trading app designed to help users create, manage, and trade a wide variety of items seamlessly.</p>
-          <ul class="space-y-3 text-gray-700">
-            <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-500 mt-1"></i> Smart AI Chatbot with 26+ helpful topics</li>
-            <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-500 mt-1"></i> Secure login &amp; verified accounts</li>
-            <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-500 mt-1"></i> Pi Network cryptocurrency payments</li>
-            <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-500 mt-1"></i> Real-time order tracking</li>
-          </ul>
-        </div>
-        <div class="space-y-6">
-          <p>Enjoy a full shopping experience with powerful filters, wishlist, multiple currencies, and a vibrant trading community.</p>
-          <p class="text-emerald-600 font-medium">Currently available in: Kirundi • Français • English</p>
-        </div>
-      </div>
+    <div id="content" class="text-center text-xl min-h-[300px]">
+      <p>💬 <strong>AI Chatbot</strong> - Ask anything about trading and payments.</p>
     </div>
-  </section>
-
-  <!-- Five Main Tabs Demo -->
-  <section id="demo" class="py-16 bg-gray-100">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-10">Explore BTB</h2>
-
-      <!-- Tabs Navigation -->
-      <div class="flex flex-wrap justify-center gap-2 md:gap-8 border-b mb-8">
-        <button onclick="showTab(0)" class="tab px-6 py-4 tab-active" id="tab0">💬 Chat</button>
-        <button onclick="showTab(1)" class="tab px-6 py-4" id="tab1">🛒 Marketplace</button>
-        <button onclick="showTab(2)" class="tab px-6 py-4" id="tab2">📦 Orders</button>
-        <button onclick="showTab(3)" class="tab px-6 py-4" id="tab3">🛎️ Notifications</button>
-        <button onclick="showTab(4)" class="tab px-6 py-4" id="tab4">👤 Profile</button>
-      </div>
-
-      <!-- Tab Contents -->
-      <div id="tabContent" class="bg-white rounded-3xl shadow-xl p-8 min-h-[500px]">
-        
-        <!-- Chat Tab -->
-        <div class="tab-panel" id="panel0">
-          <h3 class="text-2xl font-semibold mb-6">💬 AI Trading Assistant</h3>
-          <div class="bg-gray-100 rounded-2xl p-6 max-w-lg mx-auto">
-            <p class="text-gray-600 mb-4">Hello! How can I help you today with trading, payments, or security?</p>
-            <div class="bg-emerald-100 text-emerald-800 p-4 rounded-xl">What are the best payment methods in Burundi right now?</div>
-          </div>
-          <p class="text-center text-sm text-gray-500 mt-8">The chatbot remembers your conversation and supports 26+ trading topics.</p>
-        </div>
-
-        <!-- Marketplace Tab -->
-        <div class="tab-panel hidden" id="panel1">
-          <h3 class="text-2xl font-semibold mb-6">🛒 Marketplace</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm">
-              <img src="https://picsum.photos/id/237/300/200" class="w-full h-40 object-cover">
-              <div class="p-4">
-                <p class="font-medium">Fresh Maize (50kg)</p>
-                <p class="text-emerald-600 font-bold">75,000 BIF</p>
-              </div>
-            </div>
-            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm">
-              <img src="https://picsum.photos/id/201/300/200" class="w-full h-40 object-cover">
-              <div class="p-4">
-                <p class="font-medium">Smartphone Samsung A15</p>
-                <p class="text-emerald-600 font-bold">$220</p>
-              </div>
-            </div>
-          </div>
-          <p class="text-center mt-8 text-gray-500">Search • Filter by category • Add to Wishlist • Buy Now</p>
-        </div>
-
-        <!-- Orders Tab -->
-        <div class="tab-panel hidden" id="panel2">
-          <h3 class="text-2xl font-semibold mb-6">📦 My Orders</h3>
-          <div class="space-y-6">
-            <div class="border-l-4 border-emerald-500 pl-6">
-              <p class="font-medium">Order #BTB-7842 • Delivered</p>
-              <p class="text-sm text-gray-500">2 items • 145,000 BIF • 12 June 2026</p>
-            </div>
-            <div class="border-l-4 border-amber-500 pl-6">
-              <p class="font-medium">Order #BTB-7843 • On the way</p>
-              <p class="text-sm text-gray-500">1 item • Tracking available</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notifications Tab -->
-        <div class="tab-panel hidden" id="panel3">
-          <h3 class="text-2xl font-semibold mb-6">🛎️ Notifications</h3>
-          <div class="space-y-5">
-            <div class="flex gap-4 items-start">
-              <i class="fas fa-truck text-emerald-500 text-2xl mt-1"></i>
-              <div>
-                <p>Your order has been shipped</p>
-                <p class="text-xs text-gray-500">2 hours ago</p>
-              </div>
-            </div>
-            <div class="flex gap-4 items-start">
-              <i class="fas fa-gift text-amber-500 text-2xl mt-1"></i>
-              <div>
-                <p>Special offer: 20% off on electronics this week</p>
-                <p class="text-xs text-gray-500">Yesterday</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Profile Tab -->
-        <div class="tab-panel hidden" id="panel4">
-          <h3 class="text-2xl font-semibold mb-6">👤 Profile</h3>
-          <div class="max-w-md mx-auto bg-white border rounded-3xl p-8 text-center">
-            <div class="w-24 h-24 bg-emerald-100 rounded-full mx-auto mb-6 flex items-center justify-center text-4xl">🧑‍💼</div>
-            <h4 class="font-semibold text-xl">Jean Nkurunziza</h4>
-            <p class="text-emerald-600">Verified Trader • Bujumbura</p>
-            <button class="mt-8 bg-emerald-600 text-white px-8 py-3 rounded-2xl">Edit Profile</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12 text-center">
-    <p class="text-2xl font-bold mb-2">BTB</p>
-    <p>Burundi Trade Business © 2026</p>
-    <p class="text-sm text-gray-400 mt-4">Connecting Traders • Empowering Entrepreneurs</p>
-  </footer>
+  </div>
 
   <script>
-    function showTab(n) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
-      document.getElementById('tab' + n).classList.add('tab-active');
-      
-      document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
-      document.getElementById('panel' + n).classList.remove('hidden');
+    function switchTab(n) {
+      const texts = [
+        "💬 AI Chatbot - Ready to help you with trading, payments & security.",
+        "🛒 Marketplace - Browse products, add to cart, filter easily.",
+        "📦 Orders - Track your purchases and deliveries in real time.",
+        "🛎️ Notifications - Get alerts for orders and special offers.",
+        "👤 Profile - Manage your account and settings."
+      ];
+      document.getElementById("content").innerHTML = `<p class="text-2xl">${texts[n]}</p>`;
     }
-    
-    // Default tab
-    window.onload = () => showTab(0);
   </script>
 </body>
 </html>
