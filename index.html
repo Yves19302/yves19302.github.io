@@ -5,22 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BTB - Burundi Trade Business</title>
 
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
 <style>
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
 background:linear-gradient(180deg,#0b3d91,#1e90ff,#87cefa);
 color:white;
 min-height:100vh;
-padding-bottom:80px;
+padding-bottom:90px;
 }
 
-/* HEADER */
 header{
 padding:20px;
 text-align:center;
@@ -30,7 +31,6 @@ background:rgba(255,255,255,0.1);
 backdrop-filter:blur(10px);
 }
 
-/* SEARCH */
 .search-box{
 padding:15px;
 }
@@ -43,7 +43,6 @@ border-radius:15px;
 font-size:16px;
 }
 
-/* HERO */
 .hero{
 padding:20px;
 text-align:center;
@@ -54,11 +53,6 @@ font-size:28px;
 margin-bottom:10px;
 }
 
-.hero p{
-opacity:0.9;
-}
-
-/* CARDS */
 .section{
 padding:15px;
 }
@@ -87,12 +81,6 @@ font-size:16px;
 margin-bottom:5px;
 }
 
-.card p{
-font-size:14px;
-opacity:0.9;
-}
-
-/* CHATBOT */
 .chatbox{
 background:white;
 color:black;
@@ -104,12 +92,11 @@ margin:15px;
 .chatbox input{
 width:100%;
 padding:12px;
-border-radius:10px;
 border:none;
+border-radius:10px;
 margin-top:10px;
 }
 
-/* ORDERS */
 .order-box{
 background:rgba(255,255,255,0.15);
 padding:15px;
@@ -117,7 +104,6 @@ margin:15px;
 border-radius:15px;
 }
 
-/* NOTIFICATIONS */
 .notification{
 background:rgba(255,255,255,0.15);
 padding:15px;
@@ -125,7 +111,6 @@ margin:15px;
 border-radius:15px;
 }
 
-/* PROFILE */
 .profile{
 text-align:center;
 padding:20px;
@@ -138,7 +123,16 @@ border-radius:50%;
 margin-bottom:10px;
 }
 
-/* NAVIGATION */
+.login-btn{
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#0b3d91;
+color:white;
+font-size:16px;
+margin-top:15px;
+}
+
 nav{
 position:fixed;
 bottom:0;
@@ -178,9 +172,8 @@ display:block;
 <input type="text" placeholder="Search products, traders...">
 </div>
 
-<!-- HOME -->
+<!-- MARKETPLACE -->
 <div id="marketplace" class="tab active">
-
 <div class="hero">
 <h1>Burundi Trade Business</h1>
 <p>Buy, sell and trade smarter with BTB</p>
@@ -188,30 +181,31 @@ display:block;
 
 <div class="section">
 <h2>Trending Products</h2>
+
 <div class="cards">
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Smartphone</h3>
-<p>150 Pi / $50</p>
+<p>150 Pi</p>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Shoes</h3>
-<p>30 Pi / $10</p>
+<p>30 Pi</p>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Laptop</h3>
-<p>300 Pi / $100</p>
+<p>300 Pi</p>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Watch</h3>
-<p>20 Pi / $7</p>
+<p>20 Pi</p>
 </div>
 
 </div>
@@ -222,11 +216,11 @@ display:block;
 <div id="chat" class="tab">
 <div class="hero">
 <h1>BTB AI Assistant</h1>
-<p>Ask about trading, payments and security</p>
+<p>Ask anything about trading, payments, and security</p>
 </div>
 
 <div class="chatbox">
-<p>Hello 👋 How can I help you today?</p>
+<p>Hello 👋 How can I help?</p>
 <input type="text" placeholder="Type your message...">
 </div>
 </div>
@@ -239,13 +233,11 @@ display:block;
 
 <div class="order-box">
 <h3>Order #BTB101</h3>
-<p>2 items - 50 Pi</p>
 <p>Status: Shipping</p>
 </div>
 
 <div class="order-box">
 <h3>Order #BTB102</h3>
-<p>1 item - 20 Pi</p>
 <p>Status: Delivered</p>
 </div>
 </div>
@@ -256,26 +248,23 @@ display:block;
 <h1>Notifications</h1>
 </div>
 
-<div class="notification">
-📦 Your order has shipped
-</div>
-
-<div class="notification">
-🔥 New products available
-</div>
-
-<div class="notification">
-💰 Pi exchange rate updated
-</div>
+<div class="notification">📦 Your order has shipped</div>
+<div class="notification">🔥 New products available</div>
+<div class="notification">💰 Pi rate updated</div>
 </div>
 
 <!-- PROFILE -->
 <div id="profile" class="tab">
 <div class="profile">
 <img src="https://via.placeholder.com/100">
-<h2>Yves User</h2>
-<p>Trader Profile</p>
-<p>Wallet connected</p>
+
+<h2 id="username">Guest User</h2>
+<p id="wallet-status">Wallet not connected</p>
+
+<button class="login-btn" onclick="loginPi()">
+Login with Pi
+</button>
+
 </div>
 </div>
 
@@ -293,6 +282,28 @@ function showTab(tabId){
 let tabs=document.querySelectorAll('.tab');
 tabs.forEach(tab=>tab.classList.remove('active'));
 document.getElementById(tabId).classList.add('active');
+}
+
+Pi.init({
+version:"2.0",
+sandbox:true
+});
+
+async function loginPi(){
+try{
+const scopes=['username','payments'];
+
+const auth=await Pi.authenticate(scopes,function(payment){
+console.log(payment);
+});
+
+document.getElementById("username").innerText=auth.user.username;
+document.getElementById("wallet-status").innerText="Wallet Connected ✅";
+
+}catch(error){
+alert("Pi Login Failed");
+console.log(error);
+}
 }
 </script>
 
