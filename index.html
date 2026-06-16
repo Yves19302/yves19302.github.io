@@ -261,7 +261,6 @@ No orders yet
 </div>
 </div>
 
-<!-- NAV -->
 <nav>
 <button onclick="showTab('chat')">Chat</button>
 <button onclick="showTab('marketplace')">Market</button>
@@ -285,7 +284,6 @@ sandbox:true
 async function loginPi(){
 try{
 const scopes=['username','payments'];
-
 const auth=await Pi.authenticate(scopes);
 
 document.getElementById("username").innerText=auth.user.username;
@@ -297,7 +295,42 @@ alert("Pi Login failed");
 }
 
 function payWithPi(product,amount){
-alert("Pi Payment started for " + product + " (" + amount + " Pi)");
+Pi.createPayment(
+{
+amount: amount,
+memo: "Buying " + product,
+metadata: { product: product }
+},
+{
+onReadyForServerApproval: function(paymentId){
+console.log("Ready for approval:", paymentId);
+},
+
+onReadyForServerCompletion: function(paymentId, txid){
+console.log("Ready for completion:", paymentId, txid);
+},
+
+onCancel: function(paymentId){
+alert("Payment cancelled");
+},
+
+onError: function(error){
+alert("Payment failed");
+console.log(error);
+},
+
+onCompleted: function(payment, txid){
+alert(product + " purchased successfully ✅");
+
+document.getElementById("orders-list").innerHTML += `
+<div class="order-box">
+<h3>${product}</h3>
+<p>${amount} Pi</p>
+<p>Status: Paid ✅</p>
+</div>`;
+}
+}
+);
 }
 
 function sendMessage(){
