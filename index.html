@@ -28,7 +28,6 @@ text-align:center;
 font-size:24px;
 font-weight:bold;
 background:rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
 }
 
 .search-box{
@@ -40,17 +39,11 @@ width:100%;
 padding:14px;
 border:none;
 border-radius:15px;
-font-size:16px;
 }
 
 .hero{
 padding:20px;
 text-align:center;
-}
-
-.hero h1{
-font-size:28px;
-margin-bottom:10px;
 }
 
 .section{
@@ -67,7 +60,6 @@ gap:15px;
 background:rgba(255,255,255,0.15);
 padding:15px;
 border-radius:20px;
-backdrop-filter:blur(10px);
 }
 
 .card img{
@@ -76,35 +68,17 @@ border-radius:15px;
 margin-bottom:10px;
 }
 
-.card h3{
-font-size:16px;
-margin-bottom:5px;
-}
-
-.chatbox{
-background:white;
-color:black;
-padding:15px;
-border-radius:20px;
-margin:15px;
-}
-
-.chatbox input{
-width:100%;
-padding:12px;
+.buy-btn,.login-btn{
+padding:10px;
 border:none;
 border-radius:10px;
+background:#0b3d91;
+color:white;
 margin-top:10px;
+width:100%;
 }
 
-.order-box{
-background:rgba(255,255,255,0.15);
-padding:15px;
-margin:15px;
-border-radius:15px;
-}
-
-.notification{
+.chatbox,.order-box,.notification{
 background:rgba(255,255,255,0.15);
 padding:15px;
 margin:15px;
@@ -121,16 +95,6 @@ width:100px;
 height:100px;
 border-radius:50%;
 margin-bottom:10px;
-}
-
-.login-btn{
-padding:12px 20px;
-border:none;
-border-radius:10px;
-background:#0b3d91;
-color:white;
-font-size:16px;
-margin-top:15px;
 }
 
 nav{
@@ -169,43 +133,53 @@ display:block;
 <header>BTB</header>
 
 <div class="search-box">
-<input type="text" placeholder="Search products, traders...">
+<input type="text" placeholder="Search products...">
 </div>
 
 <!-- MARKETPLACE -->
 <div id="marketplace" class="tab active">
 <div class="hero">
 <h1>Burundi Trade Business</h1>
-<p>Buy, sell and trade smarter with BTB</p>
+<p>Buy and sell with Pi</p>
 </div>
 
 <div class="section">
-<h2>Trending Products</h2>
-
 <div class="cards">
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Smartphone</h3>
 <p>150 Pi</p>
+<button class="buy-btn" onclick="payWithPi('Smartphone',150)">
+Buy with Pi
+</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Shoes</h3>
 <p>30 Pi</p>
+<button class="buy-btn" onclick="payWithPi('Shoes',30)">
+Buy with Pi
+</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Laptop</h3>
 <p>300 Pi</p>
+<button class="buy-btn" onclick="payWithPi('Laptop',300)">
+Buy with Pi
+</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Watch</h3>
 <p>20 Pi</p>
+<button class="buy-btn" onclick="payWithPi('Watch',20)">
+Buy with Pi
+</button>
 </div>
 
 </div>
@@ -216,12 +190,9 @@ display:block;
 <div id="chat" class="tab">
 <div class="hero">
 <h1>BTB AI Assistant</h1>
-<p>Ask anything about trading, payments, and security</p>
 </div>
-
 <div class="chatbox">
-<p>Hello 👋 How can I help?</p>
-<input type="text" placeholder="Type your message...">
+Ask me anything...
 </div>
 </div>
 
@@ -231,14 +202,8 @@ display:block;
 <h1>Your Orders</h1>
 </div>
 
-<div class="order-box">
-<h3>Order #BTB101</h3>
-<p>Status: Shipping</p>
-</div>
-
-<div class="order-box">
-<h3>Order #BTB102</h3>
-<p>Status: Delivered</p>
+<div id="orders-list">
+<div class="order-box">No orders yet</div>
 </div>
 </div>
 
@@ -248,27 +213,20 @@ display:block;
 <h1>Notifications</h1>
 </div>
 
-<div class="notification">📦 Your order has shipped</div>
-<div class="notification">🔥 New products available</div>
-<div class="notification">💰 Pi rate updated</div>
+<div class="notification">Welcome to BTB</div>
 </div>
 
 <!-- PROFILE -->
 <div id="profile" class="tab">
 <div class="profile">
 <img src="https://via.placeholder.com/100">
-
 <h2 id="username">Guest User</h2>
 <p id="wallet-status">Wallet not connected</p>
 
-<button class="login-btn" onclick="loginPi()">
-Login with Pi
-</button>
-
+<button class="login-btn" onclick="loginPi()">Login with Pi</button>
 </div>
 </div>
 
-<!-- NAVIGATION -->
 <nav>
 <button onclick="showTab('chat')">Chat</button>
 <button onclick="showTab('marketplace')">Market</button>
@@ -302,8 +260,42 @@ document.getElementById("wallet-status").innerText="Wallet Connected ✅";
 
 }catch(error){
 alert("Pi Login Failed");
-console.log(error);
 }
+}
+
+function payWithPi(product,amount){
+Pi.createPayment({
+amount: amount,
+memo: "Buying " + product,
+metadata: {product: product}
+},{
+onReadyForServerApproval: function(paymentId){
+console.log("Ready for approval:", paymentId);
+},
+
+onReadyForServerCompletion: function(paymentId, txid){
+console.log("Ready for completion:", paymentId, txid);
+},
+
+onCancel: function(paymentId){
+alert("Payment cancelled");
+},
+
+onError: function(error, payment){
+alert("Payment failed");
+},
+
+onCompleted: function(payment, txid){
+alert("Payment successful for " + product);
+
+document.getElementById("orders-list").innerHTML += `
+<div class="order-box">
+<h3>${product}</h3>
+<p>${amount} Pi</p>
+<p>Status: Paid ✅</p>
+</div>`;
+}
+});
 }
 </script>
 
