@@ -8,44 +8,49 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
     body { font-family: system-ui, sans-serif; }
-    .hero { background: linear-gradient(135deg, #0ea5e9, #10b981); }
+    .hero-bg { background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%); }
+    .tab-active { border-bottom: 4px solid #10b981; color: #10b981; font-weight: bold; }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 text-gray-900">
 
-  <div class="hero text-white text-center py-24">
+  <!-- Hero -->
+  <header class="hero-bg text-white py-20 text-center px-4">
     <h1 class="text-6xl font-bold">BTB</h1>
-    <p class="text-3xl mt-3">Burundi Trade Business</p>
-    <p class="max-w-lg mx-auto mt-6 text-lg">Smart trading app for entrepreneurs in Burundi and worldwide.</p>
-  </div>
+    <p class="text-3xl mt-2">Burundi Trade Business</p>
+    <p class="mt-6 max-w-2xl mx-auto text-lg">Innovative app to create, manage and trade products seamlessly for entrepreneurs in Burundi and the world.</p>
+  </header>
 
   <div class="max-w-5xl mx-auto px-6 py-12">
-    <h2 class="text-3xl font-bold text-center mb-10">Five Main Tabs</h2>
+    <h2 class="text-4xl font-bold text-center mb-10">Five Main Tabs of BTB App</h2>
 
-    <div class="flex flex-wrap justify-center gap-6 border-b pb-6 mb-10">
-      <button onclick="switchTab(0)" class="font-bold text-xl active-tab">💬 Chat</button>
-      <button onclick="switchTab(1)" class="font-bold text-xl">🛒 Marketplace</button>
-      <button onclick="switchTab(2)" class="font-bold text-xl">📦 Orders</button>
-      <button onclick="switchTab(3)" class="font-bold text-xl">🛎️ Notifications</button>
-      <button onclick="switchTab(4)" class="font-bold text-xl">👤 Profile</button>
+    <div class="flex flex-wrap justify-center gap-4 border-b pb-4 mb-12">
+      <button onclick="show(0)" class="tab-active px-5 py-3" id="tab0">💬 Chat</button>
+      <button onclick="show(1)" class="px-5 py-3" id="tab1">🛒 Marketplace</button>
+      <button onclick="show(2)" class="px-5 py-3" id="tab2">📦 Orders</button>
+      <button onclick="show(3)" class="px-5 py-3" id="tab3">🛎️ Notifications</button>
+      <button onclick="show(4)" class="px-5 py-3" id="tab4">👤 Profile</button>
     </div>
 
-    <div id="content" class="text-center text-xl min-h-[300px]">
-      <p>💬 <strong>AI Chatbot</strong> - Ask anything about trading and payments.</p>
-    </div>
+    <div id="content" class="bg-white rounded-3xl shadow-xl p-10 min-h-[400px] text-center text-xl"></div>
   </div>
 
   <script>
-    function switchTab(n) {
-      const texts = [
-        "💬 AI Chatbot - Ready to help you with trading, payments & security.",
-        "🛒 Marketplace - Browse products, add to cart, filter easily.",
-        "📦 Orders - Track your purchases and deliveries in real time.",
-        "🛎️ Notifications - Get alerts for orders and special offers.",
-        "👤 Profile - Manage your account and settings."
-      ];
-      document.getElementById("content").innerHTML = `<p class="text-2xl">${texts[n]}</p>`;
+    const contents = [
+      "💬 <strong>AI Chatbot</strong><br>Ask anything about trading, payments, security. Remembers conversation.",
+      "🛒 <strong>Marketplace</strong><br>Browse products, search, filter, add to cart, wishlist.",
+      "📦 <strong>Orders</strong><br>Track all your orders from purchase to delivery.",
+      "🛎️ <strong>Notifications</strong><br>Real-time alerts for orders, deals and updates.",
+      "👤 <strong>Profile</strong><br>Manage account, payments, settings and verification."
+    ];
+
+    function show(n) {
+      document.getElementById("content").innerHTML = `<p>${contents[n]}</p>`;
+      document.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
+      document.getElementById("tab" + n).classList.add("tab-active");
     }
+    show(0);
   </script>
+
 </body>
 </html>
