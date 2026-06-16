@@ -28,6 +28,7 @@ text-align:center;
 font-size:24px;
 font-weight:bold;
 background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
 }
 
 .search-box{
@@ -60,6 +61,7 @@ gap:15px;
 background:rgba(255,255,255,0.15);
 padding:15px;
 border-radius:20px;
+backdrop-filter:blur(10px);
 }
 
 .card img{
@@ -68,7 +70,7 @@ border-radius:15px;
 margin-bottom:10px;
 }
 
-.buy-btn,.login-btn{
+.buy-btn,.login-btn,.send-btn{
 padding:10px;
 border:none;
 border-radius:10px;
@@ -78,7 +80,32 @@ margin-top:10px;
 width:100%;
 }
 
-.chatbox,.order-box,.notification{
+.chatbox{
+background:white;
+color:black;
+padding:15px;
+border-radius:20px;
+margin:15px;
+}
+
+.chat-messages{
+min-height:120px;
+margin-bottom:10px;
+}
+
+.chat-input{
+display:flex;
+gap:10px;
+}
+
+.chat-input input{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+}
+
+.order-box,.notification{
 background:rgba(255,255,255,0.15);
 padding:15px;
 margin:15px;
@@ -133,53 +160,47 @@ display:block;
 <header>BTB</header>
 
 <div class="search-box">
-<input type="text" placeholder="Search products...">
+<input type="text" placeholder="Search products, traders...">
 </div>
 
 <!-- MARKETPLACE -->
 <div id="marketplace" class="tab active">
 <div class="hero">
 <h1>Burundi Trade Business</h1>
-<p>Buy and sell with Pi</p>
+<p>Buy, sell and trade smarter with BTB</p>
 </div>
 
 <div class="section">
+<h2>Trending Products</h2>
+
 <div class="cards">
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Smartphone</h3>
 <p>150 Pi</p>
-<button class="buy-btn" onclick="payWithPi('Smartphone',150)">
-Buy with Pi
-</button>
+<button class="buy-btn" onclick="payWithPi('Smartphone',150)">Buy with Pi</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Shoes</h3>
 <p>30 Pi</p>
-<button class="buy-btn" onclick="payWithPi('Shoes',30)">
-Buy with Pi
-</button>
+<button class="buy-btn" onclick="payWithPi('Shoes',30)">Buy with Pi</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Laptop</h3>
 <p>300 Pi</p>
-<button class="buy-btn" onclick="payWithPi('Laptop',300)">
-Buy with Pi
-</button>
+<button class="buy-btn" onclick="payWithPi('Laptop',300)">Buy with Pi</button>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
 <h3>Watch</h3>
 <p>20 Pi</p>
-<button class="buy-btn" onclick="payWithPi('Watch',20)">
-Buy with Pi
-</button>
+<button class="buy-btn" onclick="payWithPi('Watch',20)">Buy with Pi</button>
 </div>
 
 </div>
@@ -190,9 +211,18 @@ Buy with Pi
 <div id="chat" class="tab">
 <div class="hero">
 <h1>BTB AI Assistant</h1>
+<p>Ask about trading, payments and security</p>
 </div>
+
 <div class="chatbox">
-Ask me anything...
+<div class="chat-messages" id="chatMessages">
+<p>Hello 👋 How can I help you today?</p>
+</div>
+
+<div class="chat-input">
+<input id="chatInput" type="text" placeholder="Type your message...">
+<button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
 </div>
 </div>
 
@@ -203,7 +233,9 @@ Ask me anything...
 </div>
 
 <div id="orders-list">
-<div class="order-box">No orders yet</div>
+<div class="order-box">
+No orders yet
+</div>
 </div>
 </div>
 
@@ -213,7 +245,9 @@ Ask me anything...
 <h1>Notifications</h1>
 </div>
 
-<div class="notification">Welcome to BTB</div>
+<div class="notification">📦 Welcome to BTB</div>
+<div class="notification">🔥 New products available</div>
+<div class="notification">💰 Pi exchange rate updated</div>
 </div>
 
 <!-- PROFILE -->
@@ -227,6 +261,7 @@ Ask me anything...
 </div>
 </div>
 
+<!-- NAV -->
 <nav>
 <button onclick="showTab('chat')">Chat</button>
 <button onclick="showTab('marketplace')">Market</button>
@@ -251,51 +286,28 @@ async function loginPi(){
 try{
 const scopes=['username','payments'];
 
-const auth=await Pi.authenticate(scopes,function(payment){
-console.log(payment);
-});
+const auth=await Pi.authenticate(scopes);
 
 document.getElementById("username").innerText=auth.user.username;
 document.getElementById("wallet-status").innerText="Wallet Connected ✅";
 
 }catch(error){
-alert("Pi Login Failed");
+alert("Pi Login failed");
 }
 }
 
 function payWithPi(product,amount){
-Pi.createPayment({
-amount: amount,
-memo: "Buying " + product,
-metadata: {product: product}
-},{
-onReadyForServerApproval: function(paymentId){
-console.log("Ready for approval:", paymentId);
-},
-
-onReadyForServerCompletion: function(paymentId, txid){
-console.log("Ready for completion:", paymentId, txid);
-},
-
-onCancel: function(paymentId){
-alert("Payment cancelled");
-},
-
-onError: function(error, payment){
-alert("Payment failed");
-},
-
-onCompleted: function(payment, txid){
-alert("Payment successful for " + product);
-
-document.getElementById("orders-list").innerHTML += `
-<div class="order-box">
-<h3>${product}</h3>
-<p>${amount} Pi</p>
-<p>Status: Paid ✅</p>
-</div>`;
+alert("Pi Payment started for " + product + " (" + amount + " Pi)");
 }
-});
+
+function sendMessage(){
+let input=document.getElementById("chatInput");
+let messages=document.getElementById("chatMessages");
+
+if(input.value.trim()!==""){
+messages.innerHTML += "<p><strong>You:</strong> " + input.value + "</p>";
+input.value="";
+}
 }
 </script>
 
